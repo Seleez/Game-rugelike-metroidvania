@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdc4wbj1k3eny"]
+
+[ext_resource type="PackedScene" uid="uid://3g4ae6bm0ppa" path="res://Scenes/Player.tscn" id="1_1p7cx"]
+[ext_resource type="Texture2D" uid="uid://bxx31ymqphgr2" path="res://Sprites/Floor.png" id="2_c3tbs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vlyh2"]
+size = Vector2(193, 31)
+
+[node name="Level1" type="Node2D"]
+
+[node name="Palyer" parent="." instance=ExtResource("1_1p7cx")]
+position = Vector2(-144, -82)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+position = Vector2(-96, 64)
+scale = Vector2(6, 1)
+texture = ExtResource("2_c3tbs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(-96, 64)
+shape = SubResource("RectangleShape2D_vlyh2")
+debug_color = Color(1.8771e-06, 0.628665, 0.490165, 0.42)
+
+[node name="Floor2" type="StaticBody2D" parent="."]
+position = Vector2(193, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor2"]
+position = Vector2(-96, 64)
+scale = Vector2(6, 1)
+texture = ExtResource("2_c3tbs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2"]
+position = Vector2(-96, 64)
+shape = SubResource("RectangleShape2D_vlyh2")
+debug_color = Color(1.8771e-06, 0.628665, 0.490165, 0.42)
