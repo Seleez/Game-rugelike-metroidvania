@@ -10,9 +10,7 @@ size = Vector2(193, 31)
 
 [node name="Palyer" parent="." instance=ExtResource("1_1p7cx")]
 position = Vector2(-144, -82)
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3, 3)
+jump_force = 250
 
 [node name="Floor" type="StaticBody2D" parent="."]
 
