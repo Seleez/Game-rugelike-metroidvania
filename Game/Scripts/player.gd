@@ -46,7 +46,7 @@ func movement(delta):
 		jump_count += 1
 	if Input.is_action_just_released("ui_accept") && !is_on_floor() && jump_count < max_jump:
 		velocity.y = gravity
-		jump_count += 1
+	print(jump_count)
 	gravity_force()
 	move_and_slide()
 
