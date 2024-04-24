@@ -11,6 +11,7 @@ height = 60.0
 size = Vector2(5, 36)
 
 [node name="Player" type="CharacterBody2D"]
+texture_filter = 1
 script = ExtResource("1_1k3m4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
