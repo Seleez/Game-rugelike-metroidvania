@@ -28,3 +28,8 @@ func _draw():
 func _process(delta):
 	queue_redraw()
 
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		for n in $Rooms.get_children():
+			n.queue_free()
+		make_rooms()
