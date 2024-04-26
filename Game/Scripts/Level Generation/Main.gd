@@ -20,4 +20,11 @@ func make_rooms():
 		room.make_room(position,Vector2(width,height) * tile_size)
 		$Rooms.add_child(room)
 		
+func _draw():
+	for room in $Rooms.get_children():
+		draw_rect(Rect2(room.position - room.size, room.size * 2),Color(81, 96, 237), false)
+
+
+func _process(delta):
+	queue_redraw()
 
