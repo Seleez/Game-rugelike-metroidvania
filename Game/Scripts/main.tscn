@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqm0plaqx6251"]
+
+[ext_resource type="Script" path="res://Scripts/Level Generation/Main.gd" id="1_la6oi"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_la6oi")
+
+[node name="Rooms" type="Node" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.1, 0.1)
