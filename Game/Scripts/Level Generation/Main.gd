@@ -6,7 +6,9 @@ var Room = preload("res://Scenes/Room.tscn")
 @export var num_rooms = 50
 @export var min_size = 4
 @export var max_size = 10
-@export var horizontal_spread = 4000
+@export var horizontal_spread = 40
+@export var vertical_spread = 400
+@export var cull = 0.5
 
 func _ready():
 	randomize()
@@ -14,12 +16,19 @@ func _ready():
 	
 func make_rooms():
 	for i in range(num_rooms):
-		var position = Vector2(randf_range(-horizontal_spread, horizontal_spread),0)
+		var position = Vector2(randf_range(-horizontal_spread, horizontal_spread),randf_range(-vertical_spread, vertical_spread))
 		var room = Room.instantiate()
 		var width = min_size + randi() % (max_size - min_size)
 		var height = min_size + randi() % (max_size - min_size)
 		room.make_room(position,Vector2(width,height) * tile_size)
 		$Rooms.add_child(room)
+	await(get_tree().create_timer(1.1).timeout)
+	for room in $Rooms.get_children():
+		if randf() < cull:
+			room.queue_free()
+		else:
+			room.freeze = true
+	
 		
 func _draw():
 	for room in $Rooms.get_children():
