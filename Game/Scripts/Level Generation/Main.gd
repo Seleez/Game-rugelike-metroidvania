@@ -7,7 +7,7 @@ var Room = preload("res://Scenes/Room.tscn")
 @export var min_size = 4
 @export var max_size = 10
 @export var horizontal_spread = 400
-@export var vertical_spread = 400
+@export var vertical_spread = 4
 @export var cull = 0.5
 
 var path
@@ -95,16 +95,42 @@ func make_map():
 		full_rect = full_rect.merge(rect)
 	var	topleft = Map.local_to_map(full_rect.position)
 	var bottomright = Map.local_to_map(full_rect.end)
-	#var cells = [Vector2i(0,0),Vector2i(1,0),Vector2i(2,0),Vector2i(0,1),Vector2i(1,1), Vector2i(2,1),Vector2i(0,2),Vector2i(1,2),Vector2i(2,2)]
+	#var cells = []
 	for x in range(topleft.x, bottomright.x):
 		for y in range(topleft.y, bottomright.y):
-			Map.set_cell(0, Vector2i(x, y), 0, Vector2i(1, 1), 0)
-			#Map.set_cells_terrain_connect(0,cells,0,0)
+			Map.set_cell(0, Vector2i(x, y),0, Vector2i(1, 1), 0)
+			#TODO
+			#Map.set_cells_terrain_connect(0,[Vector2i(x, y)],0,-1)
 	
+	var corridors = []
 	for room in $Rooms.get_children():
 		var size = (room.size / tile_size).floor()
 		var pos = Map.local_to_map(room.position)
 		var ul = (room.position / tile_size).floor() - size
 		for x in range(2,size.x * 2 - 1):
 			for y in range(2,size.y * 2 - 1):
-				Map.set_cell(0, Vector2i(ul.x + x, ul.y + y), 0, Vector2i(3, 2), 0)
+				Map.set_cells_terrain_connect(0, [Vector2i(ul.x + x, ul.y + y)], 0, -1)
+		#var p = path.get_clostest_point(room.position)
+		#for connection in path.get_point_connection(p):
+			#if not connection in corridors:
+				#var start = Map.local_to_map(Vector2(path.get_point_position(p).x,path.get_point_position(p).y))
+				#var end = Map.local_to_map(Vector2(path.get_point_position(connection).x,path.get_point_position(connection).y))
+				#
+				##carve_path(start,end)
+				#
+		#corridors.append(p)
+		
+		
+	#func carve_path(pos1,pos2):
+		#var x_diff = sign(pos2.x-pos1.x)
+		#var y_diff = sign(pos2.y-pos1.y)
+		#if x_diff == 0: x_diff = pow(-1.0, randi() % 2)
+		#if y_diff == 0: y_diff = pow(-1.0, randi() % 2)
+		#
+		#
+	
+	
+	
+	
+	
+	
