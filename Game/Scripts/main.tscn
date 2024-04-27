@@ -4,13 +4,6 @@
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_la6oi")
-tile_size = null
-num_rooms = null
-min_size = null
-max_size = null
-horizontal_spread = null
-vertical_spread = null
-cull = null
 
 [node name="Rooms" type="Node" parent="."]
 
