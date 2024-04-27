@@ -5,10 +5,10 @@ var Room = preload("res://Scenes/Room.tscn")
 @export var tile_size = 16
 @export var num_rooms = 50
 @export var min_size = 4
-@export var max_size = 10
-@export var horizontal_spread = 400
-@export var vertical_spread = 4
-@export var cull = 0.5
+@export var max_size = 20
+@export var horizontal_spread = 4000
+@export var vertical_spread = 4000
+@export var cull = 0.2
 
 var path
 
@@ -110,27 +110,34 @@ func make_map():
 		for x in range(2,size.x * 2 - 1):
 			for y in range(2,size.y * 2 - 1):
 				Map.set_cells_terrain_connect(0, [Vector2i(ul.x + x, ul.y + y)], 0, -1)
-		#var p = path.get_clostest_point(room.position)
-		#for connection in path.get_point_connection(p):
-			#if not connection in corridors:
-				#var start = Map.local_to_map(Vector2(path.get_point_position(p).x,path.get_point_position(p).y))
-				#var end = Map.local_to_map(Vector2(path.get_point_position(connection).x,path.get_point_position(connection).y))
-				#
-				##carve_path(start,end)
-				#
-		#corridors.append(p)
+		var p = path.get_closest_point(room.position)
+		for connection in path.get_point_connections(p):
+			if not connection in corridors:
+				var start = Map.local_to_map(Vector2(path.get_point_position(p).x,path.get_point_position(p).y))
+				var end = Map.local_to_map(Vector2(path.get_point_position(connection).x,path.get_point_position(connection).y))
+				
+				carve_path(start,end)
+				
+		corridors.append(p)
 		
 		
-	#func carve_path(pos1,pos2):
-		#var x_diff = sign(pos2.x-pos1.x)
-		#var y_diff = sign(pos2.y-pos1.y)
-		#if x_diff == 0: x_diff = pow(-1.0, randi() % 2)
-		#if y_diff == 0: y_diff = pow(-1.0, randi() % 2)
-		#
-		#
+func carve_path(pos1,pos2):
+	var x_diff = sign(pos2.x-pos1.x)
+	var y_diff = sign(pos2.y-pos1.y)
 	
+	#print(x_diff)
+	#print(y_diff)
+	if x_diff == 0: x_diff = pow(-1.0, randi() % 2)
+	if y_diff == 0: y_diff = pow(-1.0, randi() % 2)
 	
-	
-	
-	
-	
+	var x_over_y = pos1
+	var y_over_x = pos2
+	if(randi() % 2 )> 0:
+		x_over_y = pos2
+		y_over_x = pos1
+	for x in range(pos1.x, pos2.x, x_diff):
+		Map.set_cells_terrain_connect(0, [Vector2i(x, y_over_x.y)], 0, -1)
+		Map.set_cells_terrain_connect(0, [Vector2i(x, y_over_x.y + y_diff)], 0, -1)
+	for y in range(pos1.y, pos2.y, y_diff):
+		Map.set_cells_terrain_connect(0, [Vector2i(x_over_y.x, y)], 0, -1)
+		Map.set_cells_terrain_connect(0, [Vector2i(x_over_y.x + x_diff, y)], 0, -1)
