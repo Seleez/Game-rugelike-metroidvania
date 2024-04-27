@@ -2,7 +2,7 @@ extends Node2D
 
 var Room = preload("res://Scenes/Room.tscn")
 
-@export var tile_size = 32
+@export var tile_size = 16
 @export var num_rooms = 50
 @export var min_size = 4
 @export var max_size = 10
@@ -11,6 +11,8 @@ var Room = preload("res://Scenes/Room.tscn")
 @export var cull = 0.5
 
 var path
+
+@onready var Map = $TileMap
 
 func _ready():
 	randomize()
@@ -59,6 +61,8 @@ func _input(event):
 			n.queue_free()
 		path = null
 		make_rooms()
+	if event.is_action_pressed('ui_focus_next'):
+		make_map()
 		
 func find_mst(nodes):
 	var path = AStar2D.new()
@@ -80,4 +84,27 @@ func find_mst(nodes):
 		path.connect_points(path.get_closest_point(position),n)
 		nodes.erase(min_position)
 	return path
-			
+
+
+func make_map():
+	Map.clear()
+	
+	var full_rect = Rect2()
+	for room in $Rooms.get_children():
+		var rect = Rect2(room.position - room.size, room.get_node("CollisionShape2D").shape.extents * 2)
+		full_rect = full_rect.merge(rect)
+	var	topleft = Map.local_to_map(full_rect.position)
+	var bottomright = Map.local_to_map(full_rect.end)
+	#var cells = [Vector2i(0,0),Vector2i(1,0),Vector2i(2,0),Vector2i(0,1),Vector2i(1,1), Vector2i(2,1),Vector2i(0,2),Vector2i(1,2),Vector2i(2,2)]
+	for x in range(topleft.x, bottomright.x):
+		for y in range(topleft.y, bottomright.y):
+			Map.set_cell(0, Vector2i(x, y), 0, Vector2i(1, 1), 0)
+			#Map.set_cells_terrain_connect(0,cells,0,0)
+	
+	for room in $Rooms.get_children():
+		var size = (room.size / tile_size).floor()
+		var pos = Map.local_to_map(room.position)
+		var ul = (room.position / tile_size).floor() - size
+		for x in range(2,size.x * 2 - 1):
+			for y in range(2,size.y * 2 - 1):
+				Map.set_cell(0, Vector2i(ul.x + x, ul.y + y), 0, Vector2i(3, 2), 0)
