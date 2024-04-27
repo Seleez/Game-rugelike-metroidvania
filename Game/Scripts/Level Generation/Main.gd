@@ -6,7 +6,7 @@ var Room = preload("res://Scenes/Room.tscn")
 @export var num_rooms = 50
 @export var min_size = 4
 @export var max_size = 10
-@export var horizontal_spread = 40
+@export var horizontal_spread = 400
 @export var vertical_spread = 400
 @export var cull = 0.5
 
@@ -24,7 +24,7 @@ func make_rooms():
 		var height = min_size + randi() % (max_size - min_size)
 		room.make_room(position,Vector2(width,height) * tile_size)
 		$Rooms.add_child(room)
-	await(get_tree().create_timer(1.1).timeout)
+	await(get_tree().create_timer(0.1).timeout)
 	var room_position = []
 	for room in $Rooms.get_children():
 		if randf() < cull:
@@ -35,7 +35,7 @@ func make_rooms():
 			room_position.append(Vector2(room.position.x,room.position.y))
 			#print(room_position)
 			
-	await(get_tree().create_timer(1.1).timeout)
+	await(get_tree().create_timer(0.1).timeout)
 	path = find_mst(room_position)
 	
 		
@@ -57,6 +57,7 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		for n in $Rooms.get_children():
 			n.queue_free()
+		path = null
 		make_rooms()
 		
 func find_mst(nodes):
